@@ -55,7 +55,7 @@ object SparkGrep {
 //      new point(coor(0),sub, d)
 //    })
 //
-    //
+    ///
     val data="Data/"
     val pointss=  sc.textFile(data+"uni1m4d.txt", N).zipWithIndex().map(y => {
       val x = y._1
