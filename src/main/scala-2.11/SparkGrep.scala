@@ -19,7 +19,7 @@ object SparkGrep {
 //            , classOf[scala.collection.mutable.ListBuffer[point]], classOf[spark.example.Key]
 //            //, classOf[double]
 //          ))
-//////////////
+///////////////
 //      conf.set("spark.kryo.registrationRequired", "true")
       .set("spark.executor.memory", "4g")
         //.set("spark.eventLog","enabled")
