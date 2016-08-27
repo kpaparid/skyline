@@ -305,7 +305,7 @@ points.sortBy(_.f(splitdim)).zipWithIndex().map(x=>{
 
 
 
-  //todo 5d
+
   class AngularPartitioner(N: Int) extends Partitioner {
     require(N >= 0, s"Number of partitions ($N) cannot be negative.")
 

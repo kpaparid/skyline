@@ -34,7 +34,7 @@ var npoints=points.sortBy(_.f(0)).zipWithIndex()
     val next = (N / Math.pow(k, 1)).toInt
   new NKey(partition,index,dim+1,f,next)
 })
-    .repartitionAndSortWithinPartitions(new an(N,cu,k))
+    .repartitionAndSortWithinPartitions(new index_partitioner(N,cu,k))
     .mapPartitionsWithIndex((x,y)=>{
       y.map(k=>{
         k._2._1.partition=x
@@ -74,7 +74,7 @@ var npoints=points.sortBy(_.f(0)).zipWithIndex()
           val next = (N / Math.pow(k, it + 1)).toInt
           //println("next "+cu)
           new LKey(sum,partition,index,it+1,f,next)
-        }).repartitionAndSortWithinPartitions(new lan(N,cu,k))
+        }).repartitionAndSortWithinPartitions(new sum_partitioner(N,cu,k))
           .mapPartitionsWithIndex((x,y)=>{
             y.map(k=>{
               k._2.partition=x
@@ -97,7 +97,7 @@ var npoints=points.sortBy(_.f(0)).zipWithIndex()
           val f = x.f
           val next = (N / Math.pow(k, it + 1)).toInt
           new NKey(partition,index,it+1,f,next)
-        }).repartitionAndSortWithinPartitions(new an(N,cu,k))
+        }).repartitionAndSortWithinPartitions(new index_partitioner(N,cu,k))
         .mapPartitionsWithIndex((x,y)=>{
           y.map(k=>{
             k._2.partition=x
@@ -139,7 +139,7 @@ var npoints=points.sortBy(_.f(0)).zipWithIndex()
 
 
 
-class lan(N: Int,current:Int,k:Int) extends Partitioner {
+class sum_partitioner(N: Int, current:Int, k:Int) extends Partitioner {
   require(N >= 0, s"Number of partitions ($N) cannot be negative.")
 
   def numPartitions = N
@@ -159,11 +159,10 @@ class lan(N: Int,current:Int,k:Int) extends Partitioner {
 }
 
 
-  class an(N: Int,current:Int,k:Int) extends Partitioner {
+  class index_partitioner(N: Int, current:Int, k:Int) extends Partitioner {
     require(N >= 0, s"Number of partitions ($N) cannot be negative.")
 
     def numPartitions = N
-
     def getPartition(key: Any): Int = {
       val Key = key.asInstanceOf[NKey]
       var partition = Key.partition
@@ -178,101 +177,9 @@ class lan(N: Int,current:Int,k:Int) extends Partitioner {
 //      if (index >= current) {
       //        partition += next.toInt
       //      }
-
       val p = index / current
       partition+=p.toInt*next
-
-//println("mesa "+partition)
       partition
     }
   }
-//  (0 until d-1).foreach(dd=>{
-//println("new dimension")
-//    points=points.sortBy(_.f(dd)).zipWithIndex().map(x=>{
-//      var c=n/k
-//      var index=x._2%c.toInt
-////      println("index "+index)
-////      var c=(n/Math.pow(k,d+1))
-//
-//
-////      var c=n/next
-////      println("mesa "+k)
-//var p=(x._2/c).toInt
-//      var kc=k/(dd+1)
-//var part=x._1.partition+p*kc
-//
-//      println("index "+x._2+"\t p "+p+"\t old_partition "+x._1.partition+"\t new_partition "+part+"\t current "+kc)
-//      x._1.partition= part
-//      x._1
-//    }).cache()
-////    kc=kc-1
-//
-//
-//    points.count()
-////    current.setValue(150)
-////    next.setValue(100)
-//////    c=c/k.toInt
-////    println("next "+next)
-////    println("current "+current)
-//  })
-//
-//  points.foreach(x=>{
-//    println(x.f(0)+"\t"+x.f(1)+"\t"+x.partition)
-////    println(x.f(0)+"\t"+x.partition)
-//  })
-//  var rdd=points.keyBy(x => {
-//    new DKey(x.sum,x.coor_p)
-//  }).repartitionAndSortWithinPartitions(new Angular(N)).cache()
-//  .count()
 
-//  var local=rdd
-//    .mapPartitionsWithIndex((index,iter) => {
-//
-//      new LocalSkyline(d,localcount(index)).skyline(iter)
-//    })
-//  new GlobalSkyline(d,globalcount).skyline(local)
-
-
-
-//
-//  class Angular(N: Int) extends Partitioner {
-//    require(N >= 0, s"Number of partitions ($N) cannot be negative.")
-//
-//    def numPartitions = N
-//
-//    def getPartition(key: Any): Int = {
-//      val Key=key.asInstanceOf[DKey]
-//      var g: Double = 1 / (d.toDouble - 1)
-//
-//
-//
-//      val coor = Key.dcoor
-//
-//      //println(key.asInstanceOf[Key].coor(0))
-//
-//      //println("f "+f(0)+"   "+f(1)+"    ")
-//
-//      //println("coor "+coor(0)+"   "+coor(1)+"    ")
-//      var count = 1
-//      var sum = coor(0)
-//      (1 until coor.length).foreach(x => {
-//        sum += count * coor(x) * k.toInt
-//        //println("Sum "+sum+"   x "+coor(x)+" count "+count)
-//        count += 1
-//      })
-//      if (sum > N - 1) {
-//        //println("wtf re")
-//
-//        sum = sum - N
-//      }
-//
-//       // println("sum "+sum)
-//      //      println("/////")
-//      //      println("/////")
-//      sum
-//
-//    }
-//
-//
-//  }
-//}
