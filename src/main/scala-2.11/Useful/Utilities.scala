@@ -161,7 +161,43 @@ import spark.example
 
 
 
+//    println("head "+head)
+//    println("next "+next)
+//    val max = points.filter(_.partition==head).max()(new Ordering[point]() {
+//      override def compare(x: point, y: point): Int =
+//        Ordering[Double].compare(x.coor(splitdim), y.coor(splitdim))
+//    }).coor(splitdim)
+//    val min = points.filter(_.partition==head).min()(new Ordering[point]() {
+//      override def compare(x: point, y: point): Int =
+//        Ordering[Double].compare(x.coor(splitdim), y.coor(splitdim))
+//    }).coor(splitdim)
+//      val min=points.filter(_.partition==head).reduce((x,y)=>{
+//        if(x.coor(splitdim)>y.coor(splitdim))
+//          y
+//        else
+//          x
+//      }).coor(splitdim)
+//      val max=points.filter(_.partition==head).reduce((x,y)=>{
+//        if(x.coor(splitdim)<y.coor(splitdim))
+//          y
+//        else
+//          x
+//      }).coor(splitdim)
 
+//      val dummy = points.first()
+//      points.filter(_.partition==head).cache()
+//     val max= points.filter(_.partition==head).fold(dummy)((acc,employee) => {
+//
+//       if(acc.coor(splitdim) > employee.coor(splitdim)) employee else acc
+//
+//     }
+//     ).coor(splitdim)
+//      val min= points.filter(_.partition==head).fold(dummy)((acc,employee) => {
+//
+//        if(acc.coor(splitdim) < employee.coor(splitdim)) employee else acc
+//
+//      }
+//      ).coor(splitdim)
 
 
 
