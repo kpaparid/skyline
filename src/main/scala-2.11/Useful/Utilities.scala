@@ -1,6 +1,6 @@
 import Skyline.LocalSkyline
 import org.apache.spark.rdd.RDD
-import spark.example.{Key, RandomPartition, point}
+import spark.example
 
 //package Useful
 //

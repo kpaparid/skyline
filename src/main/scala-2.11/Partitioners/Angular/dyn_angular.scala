@@ -19,6 +19,7 @@ class dyn_angular(var points: RDD[point], N: Int, d: Int,next:Accumulator[Int],v
   var k=k_d.toInt
   println("k\t"+k)
   println("total\t"+total)
+  println("dsd "+(d-1) )
 var cu=(total/k).toInt
 
 //  var ne=Math.pow(2,it)
@@ -32,7 +33,7 @@ var npoints=points.sortBy(_.f(0)).zipWithIndex()
     val index = x._2
     val f = x._1.f
     val next = (N / Math.pow(k, 1)).toInt
-  new NKey(partition,index,dim+1,f,next)
+  new D_index(partition,index,dim+1,f,next)
 })
     .repartitionAndSortWithinPartitions(new index_partitioner(N,cu,k))
     .mapPartitionsWithIndex((x,y)=>{
@@ -60,12 +61,14 @@ var npoints=points.sortBy(_.f(0)).zipWithIndex()
     })
 
   })
-  (1 until d-1).foreach(it=>{
+
+  (1 until d-2).foreach(it=>{
 
       cu=(total/ Math.pow(k, it + 1)).toInt
-
-      if(it==d-2){
-        //println("final round")
+      println("it "+it)
+    println("d-2 "+ (d-2))
+      if(it==d-3){
+        println("final round")
         npoints=npoints.keyBy(x=> {
           val sum=x.sum
           val partition = x.partition
@@ -73,7 +76,7 @@ var npoints=points.sortBy(_.f(0)).zipWithIndex()
           val f = x.f
           val next = (N / Math.pow(k, it + 1)).toInt
           //println("next "+cu)
-          new LKey(sum,partition,index,it+1,f,next)
+          new D_sum(sum,partition,index,it+1,f,next)
         }).repartitionAndSortWithinPartitions(new sum_partitioner(N,cu,k))
           .mapPartitionsWithIndex((x,y)=>{
             y.map(k=>{
@@ -96,7 +99,7 @@ var npoints=points.sortBy(_.f(0)).zipWithIndex()
           val index = x.spot
           val f = x.f
           val next = (N / Math.pow(k, it + 1)).toInt
-          new NKey(partition,index,it+1,f,next)
+          new D_index(partition,index,it+1,f,next)
         }).repartitionAndSortWithinPartitions(new index_partitioner(N,cu,k))
         .mapPartitionsWithIndex((x,y)=>{
           y.map(k=>{
@@ -114,17 +117,18 @@ var npoints=points.sortBy(_.f(0)).zipWithIndex()
       }
 
 //
-//    println("\n/////////////////\n\tROUND "+(it+1)+"\n/////////////////\n")
-//    npoints.foreachPartition(p=>{
-//
-//      println("new partition")
-////      println("number of points "+ p.size)
-//      println(p.foreach(x=>{
-//       // println("f "+x.f(0)+" "+x.f(1)+" "+x.f(2)+"\t"+x.partition+"\t"+x.sum)
-//      }))
-//
-//  })
+    println("\n/////////////////\n\tROUND "+(it+1)+"\n/////////////////\n")
+    npoints.foreachPartition(p=>{
 
+      println("new partition")
+//      println("number of points "+ p.size)
+      println(p.foreach(x=>{
+        println("f "+x.f(0)+" "+x.f(1)+" "+x.f(2)+"\t"+x.partition+"\tsum "+x.sum)
+      }))
+
+  })
+println()
+    println()
     new GlobalSkyline(d,globalcount).skyline(npoints
       .mapPartitionsWithIndex((index,iter) => {
 
@@ -146,7 +150,7 @@ class sum_partitioner(N: Int, current:Int, k:Int) extends Partitioner {
 
   def getPartition(key: Any): Int = {
 
-    val Key = key.asInstanceOf[LKey]
+    val Key = key.asInstanceOf[D_sum]
     var partition = Key.partition
     val index = Key.index
     var f = Key.f
@@ -164,7 +168,7 @@ class sum_partitioner(N: Int, current:Int, k:Int) extends Partitioner {
 
     def numPartitions = N
     def getPartition(key: Any): Int = {
-      val Key = key.asInstanceOf[NKey]
+      val Key = key.asInstanceOf[D_index]
       var partition = Key.partition
       val index = Key.index
       var f = Key.f

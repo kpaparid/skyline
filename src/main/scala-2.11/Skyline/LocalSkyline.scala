@@ -18,7 +18,7 @@ class LocalSkyline(var d: Int,lc: Accumulator[Int]) extends Serializable {
 
 
     iter.foreach(x => {
-     // println("lp "+x._2.sum+" f "+x._2.f(0)+" "+x._2.coor(0)+"\t"+x._2.coor(1))
+//      println("lp "+x._2.sum+" f "+x._2.f(0)+" "+x._2.coor(0)+"\t"+x._2.coor(1))
 
       local_count += 1
       localcount += 1
@@ -39,11 +39,13 @@ class LocalSkyline(var d: Int,lc: Accumulator[Int]) extends Serializable {
 
 
       })
-
+//        println("inserting "+x.sum)
         skyline += x
         //skyline=skyline.sortBy(_.sum)//(Ordering[Double])
       }
     })
+    //1535615
+    //2247837
 //        println("\nLocal points "+local_count)
 //        println("\nLocal Count " + localcount)
 //    println("\nLOCAL SIZE " + skyline.size)
@@ -66,6 +68,9 @@ class LocalSkyline(var d: Int,lc: Accumulator[Int]) extends Serializable {
     skyline.toIterator
   }
 
+  //2698022
+  //1136130
+
   def dom(x: point, y: point): Int = {
 
     var l = 0
@@ -75,7 +80,7 @@ class LocalSkyline(var d: Int,lc: Accumulator[Int]) extends Serializable {
 //    println("comparing sum " +x.sum+ " with "+ y.sum)
     //println("\t"+localcount)
     for (i <- 0 until d) {
-//      println("x: "+x.coor(i)+"\ny: "+y.coor(i)+"\n")
+      //println("x: "+x.coor(i)+"\ny: "+y.coor(i)+"\n")
       if (x.coor(i) < y.coor(i)) {
         l += 1
       }
