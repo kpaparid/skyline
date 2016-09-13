@@ -10,7 +10,7 @@ object SparkGrep {
     Logger.getLogger("org").setLevel(Level.OFF)
     Logger.getLogger("akka").setLevel(Level.OFF)
     val conf = new SparkConf()
-      .setMaster("local[1]")
+      .setMaster("local[4]")
       .setAppName("Skyline")
 //      .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
 ///
@@ -40,7 +40,7 @@ object SparkGrep {
 
     val method = "Angular" //args(0).toString
 
-    val N = 16 //args(2).toInt
+    val N = 4  //args(2).toInt
     val d = 4 //args(3).toInt
     //val points = sc.broadcast(input.points)
 //git reset --soft HEAD^
@@ -69,7 +69,7 @@ object SparkGrep {
       new point(y._2.toString,sub, d)
     })
 
-    val points=sc.parallelize(pointss.take(160))
+    val points=sc.parallelize(pointss.take(10))
 //    points.sortBy(_.f(0)).foreach(x=>{
 //     // println("f "+x.f(0)+"\tcoor  "+x.coor(0)+" "+x.coor(1)+"\t"+x.sum)
 //    })
