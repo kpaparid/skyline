@@ -162,10 +162,6 @@ class dyn_angular(var points: RDD[point], N: Int, d: Int, next: Accumulator[Int]
     })
     println()
   })
-  new GlobalSkyline(d, globalcount).skyline(npoints
-    .mapPartitionsWithIndex((index, iter) => {
-      new LocalSkyline(d, localcount(index)).skyline(iter)
-    }))
 
 }
 
@@ -192,7 +188,7 @@ class sum_partitioner(N: Int, current: Int, k: Int,NN:Int) extends Partitioner {
     //    println("current "+current)
 
     if (p == k) {
-      println("mpika")
+//      println("mpika")
 
       partition = N-NN //todo fix this
     }

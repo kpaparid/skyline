@@ -19,7 +19,7 @@ class LocalSkyline(var d: Int,lc: Accumulator[Int]) extends Serializable {
 
     iter.foreach(x => {
 //      println("lp "+x._2.sum+" f "+x._2.f(0)+" "+x._2.coor(0)+"\t"+x._2.coor(1))
-
+var flag=false
       local_count += 1
       localcount += 1
       breakable {
@@ -34,13 +34,20 @@ class LocalSkyline(var d: Int,lc: Accumulator[Int]) extends Serializable {
             skyline -= y
           }
           else if (l == 0) {
+            y.score+=1
             break()
+//            flag=true
+
           }
 
 
       })
 //        println("inserting "+x.sum)
-        skyline += x
+//        if(!flag){
+          var xx=x
+          xx.score=0
+          skyline += xx
+//        }
         //skyline=skyline.sortBy(_.sum)//(Ordering[Double])
       }
     })
@@ -65,6 +72,7 @@ class LocalSkyline(var d: Int,lc: Accumulator[Int]) extends Serializable {
 //    println( skyline.size)
 ////println()
 //    println("//////////////")
+    println("local iter size "+skyline.size)
     skyline.toIterator
   }
 

@@ -58,16 +58,16 @@ class grid(var points: RDD[point], N: Int, d: Int,
   //  val s =new GlobalSkyline(d,globalcount).skyline(rdd2)
 
 
-  var rdd = points.keyBy(x => {
+  val npoints = points.keyBy(x => {
     new Key(x.partition, x.sum, x.coor, x.f)
-  }).repartitionAndSortWithinPartitions(new GridPartitioner(N)).cache()
+  }).repartitionAndSortWithinPartitions(new GridPartitioner(N)).cache().map(_._2)
 
 
-  new GlobalSkyline(d, globalcount).skyline(rdd
-    .mapPartitionsWithIndex((index, iter) => {
-      val it = iter.map(_._2)
-      new LocalSkyline(d, localcount(index)).skyline(it)
-    }))
+//  new GlobalSkyline(d, globalcount).skyline(rdd
+//    .mapPartitionsWithIndex((index, iter) => {
+//      val it = iter.map(_._2)
+//      new LocalSkyline(d, localcount(index)).skyline(it)
+//    }))
 
 
   //  while(true){

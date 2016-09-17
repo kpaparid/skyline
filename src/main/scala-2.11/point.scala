@@ -4,7 +4,7 @@ package spark.example
 
 case class point(var name:String, var coor: Array[Double], d: Int)
   extends Serializable {
-
+  var score=0
   var coor_p=new Array[Int](d-1)
   var f=new Array[Double](d-1)
   var sum=0.0
